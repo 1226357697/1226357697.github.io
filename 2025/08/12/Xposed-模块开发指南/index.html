@@ -26,16 +26,16 @@
 <meta property="og:site_name" content="Smile">
 <meta property="og:description" content="Xposed 模块开发指南XposedXposed 是一个针对 Android 系统的框架，允许开发者通过 Hook（钩取）系统或应用的函数来修改其行为，实现个性化功能，无需修改原始 APK 文件。 通过 Xposed，开发者可以轻松进行数据劫持、修改参数值和返回值、主动调用方法等操作。基于此框架，开发者能够创建出各种强大的模块，且这些模块可以在功能不冲突的前提下同时运行，极大提升了系统的可定制性">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/xp_moudle.png">
-<meta property="og:image" content="http://example.com/xp_mode_info.png">
-<meta property="og:image" content="http://example.com/MainActivity_Code.png">
-<meta property="og:image" content="http://example.com/FlagGuard_Code.png">
-<meta property="og:image" content="http://example.com/show_password.png">
+<meta property="og:image" content="http://example.com/assets/xp_moudle.png">
+<meta property="og:image" content="http://example.com/assets/xp_mode_info.png">
+<meta property="og:image" content="http://example.com/assets/MainActivity_Code.png">
+<meta property="og:image" content="http://example.com/assets/FlagGuard_Code.png">
+<meta property="og:image" content="http://example.com/assets/show_password.png">
 <meta property="article:published_time" content="2025-08-12T13:49:15.000Z">
-<meta property="article:modified_time" content="2025-08-12T14:05:49.908Z">
+<meta property="article:modified_time" content="2025-08-12T14:38:36.566Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/xp_moudle.png">
+<meta name="twitter:image" content="http://example.com/assets/xp_moudle.png">
   
   
   
@@ -382,23 +382,23 @@
 <p>至此框架搭建完毕。</p>
 <h2 id="加载Xposed-模块"><a href="#加载Xposed-模块" class="headerlink" title="加载Xposed 模块"></a>加载Xposed 模块</h2><p>把编译好的apk安装到手机上。</p>
 <p>安装后，LSPosed就可以检测到我们的模块。</p>
-<p><img src="/xp_moudle.png" srcset="/img/loading.gif" lazyload alt="xp_moudle"></p>
+<p><img src="/assets/xp_moudle.png" srcset="/img/loading.gif" lazyload alt="xp_moudle"></p>
 <p>在上图中可以看到我们插件的名字和模块描述。</p>
-<p><img src="/xp_mode_info.png" srcset="/img/loading.gif" lazyload alt="xp_mode_info"></p>
+<p><img src="/assets/xp_mode_info.png" srcset="/img/loading.gif" lazyload alt="xp_mode_info"></p>
 <p>在上图中可以我设置模块作用的包名会有一个推荐应用的显示。</p>
 <h2 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h2><p>我们只是为了练习Xposed 模块的编写，不讨论样本的难以程度。</p>
 <p>我在网上下载了一个样本程序，它的功能是：需要输入一个密码，点击提交，然后他会判断密码是否是预期的密码，然后给出对应提示。</p>
 <h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>使用jadx反编译MainActivity</p>
-<p><img src="/MainActivity_Code.png" srcset="/img/loading.gif" lazyload alt="MainActivity_Code"></p>
+<p><img src="/assets/MainActivity_Code.png" srcset="/img/loading.gif" lazyload alt="MainActivity_Code"></p>
 <p>通过反编译的结果得知，如果flag不为null，就达到我们的目的。所以继续追踪FlagGuard类的getFlag方法。</p>
-<p><img src="/FlagGuard_Code.png" srcset="/img/loading.gif" lazyload alt="FlagGuard_Code"></p>
+<p><img src="/assets/FlagGuard_Code.png" srcset="/img/loading.gif" lazyload alt="FlagGuard_Code"></p>
 <p>通过反编译getFlag方法的实现得知，如果str和Data类的getData方法返回相同，该函数的返回值就不为null。</p>
 <p>我们可以通过Hook Data类的getData方法来得到正确的密码。</p>
 <h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><p>通过Hook getData方法使用Toast来显示出正确的密码。</p>
 <p>提示：jadx可以通过右击方法，复制为xposed片段，直接生成Hook代码。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.xpdemo;<br><br><span class="hljs-keyword">import</span> android.content.ClipData;<br><span class="hljs-keyword">import</span> android.content.ClipboardManager;<br><span class="hljs-keyword">import</span> android.content.Context;<br><span class="hljs-keyword">import</span> android.util.Log;<br><span class="hljs-keyword">import</span> android.widget.Toast;<br><br><span class="hljs-keyword">import</span> de.robv.android.xposed.IXposedHookLoadPackage;<br><span class="hljs-keyword">import</span> de.robv.android.xposed.XC_MethodHook;<br><span class="hljs-keyword">import</span> de.robv.android.xposed.callbacks.XC_LoadPackage;<br><span class="hljs-keyword">import</span> de.robv.android.xposed.XposedHelpers;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">HookMain</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">IXposedHookLoadPackage</span>&#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">TAG</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;HookMain&quot;</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">targetPackName</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;com.XXX.crackme0x02&quot;</span>;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">handleLoadPackage</span><span class="hljs-params">(XC_LoadPackage.LoadPackageParam lpparam)</span> <span class="hljs-keyword">throws</span> Throwable &#123;<br><br>        <span class="hljs-keyword">if</span>(!lpparam.packageName.equals(targetPackName)) &#123;<br>            <span class="hljs-keyword">return</span>;<br>        &#125;<br><br><br>        Log.e(TAG, lpparam.packageName + <span class="hljs-string">&quot; Starting&quot;</span>);<br>        XposedHelpers.findAndHookMethod(<span class="hljs-string">&quot;com.XXX.crackme0x02.Data&quot;</span>, lpparam.classLoader, <span class="hljs-string">&quot;getData&quot;</span>, android.content.Context.class, <span class="hljs-keyword">new</span> <span class="hljs-title class_">XC_MethodHook</span>() &#123;<br>            <span class="hljs-meta">@Override</span><br>            <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">beforeHookedMethod</span><span class="hljs-params">(MethodHookParam param)</span> <span class="hljs-keyword">throws</span> Throwable &#123;<br>                <span class="hljs-built_in">super</span>.beforeHookedMethod(param);<br>            &#125;<br>            <span class="hljs-meta">@Override</span><br>            <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">afterHookedMethod</span><span class="hljs-params">(MethodHookParam param)</span> <span class="hljs-keyword">throws</span> Throwable &#123;<br>                <span class="hljs-built_in">super</span>.afterHookedMethod(param);<br>                <span class="hljs-type">Context</span> <span class="hljs-variable">context</span> <span class="hljs-operator">=</span> (Context)param.args[<span class="hljs-number">0</span>];<br>                <span class="hljs-type">String</span> <span class="hljs-variable">passWord</span> <span class="hljs-operator">=</span> (String)param.getResult();<br>                Toast.makeText(context, <span class="hljs-string">&quot;Password is &quot;</span> + passWord, Toast.LENGTH_LONG).show();<br>                copyTextToClipboard(passWord, context);<br>            &#125;<br>        &#125;);<br>    &#125;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">copyTextToClipboard</span><span class="hljs-params">(String text, Context context)</span> &#123;<br>        <span class="hljs-comment">// 获取系统剪切板服务</span><br>        <span class="hljs-type">ClipboardManager</span> <span class="hljs-variable">clipboard</span> <span class="hljs-operator">=</span> (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);<br><br>        <span class="hljs-comment">// 创建 ClipData 对象，包含要复制的文本</span><br>        <span class="hljs-type">ClipData</span> <span class="hljs-variable">clip</span> <span class="hljs-operator">=</span> ClipData.newPlainText(<span class="hljs-string">&quot;label&quot;</span>, text);<br><br>        <span class="hljs-comment">// 将 ClipData 设置到剪切板</span><br>        clipboard.setPrimaryClip(clip);<br>    &#125;<br><br>&#125;<br><br></code></pre></td></tr></table></figure>
 
-<h3 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h3><p><img src="/show_password.png" srcset="/img/loading.gif" lazyload alt="show_password"></p>
+<h3 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h3><p><img src="/assets/show_password.png" srcset="/img/loading.gif" lazyload alt="show_password"></p>
 
                 
               </div>
@@ -460,6 +460,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2025/08/12/Xposed-%E6%A8%A1%E5%9D%97%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97-1/" title="Xposed 模块开发指南">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Xposed 模块开发指南</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
