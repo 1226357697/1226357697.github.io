@@ -1,0 +1,943 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="深入了解ARM架构简介ARM架构ARM架构（Advanced RISC Machine 更早称作Acorn RISC Machine）是一种基于精简指令集计算（RISC）的处理器架构，以其高效能和低功耗的特性在移动设备、嵌入式系统以及服务器等领域得到广泛应用。 ARM32架构ARM32架构提供了16个通用寄存器（R0至R15），其中R15为程序计数器（PC）。ARM模式和Thumb模式共享这些寄存">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ARM架构">
+<meta property="og:url" content="http://example.com/2025/08/18/ARM%E6%9E%B6%E6%9E%84/index.html">
+<meta property="og:site_name" content="Smile">
+<meta property="og:description" content="深入了解ARM架构简介ARM架构ARM架构（Advanced RISC Machine 更早称作Acorn RISC Machine）是一种基于精简指令集计算（RISC）的处理器架构，以其高效能和低功耗的特性在移动设备、嵌入式系统以及服务器等领域得到广泛应用。 ARM32架构ARM32架构提供了16个通用寄存器（R0至R15），其中R15为程序计数器（PC）。ARM模式和Thumb模式共享这些寄存">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-08-18T13:31:17.000Z">
+<meta property="article:modified_time" content="2025-08-18T13:32:17.819Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>ARM架构 - Smile</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":"UGjLQZm0KKm049ZrDQ9IUUEU-gzGzoHsz","app_key":"XDaflFWf8SryMAkeUD2vD0Mp","server_url":"https://ugjlqzm0.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Smile</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="ARM架构"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-08-18 21:31" pubdate>
+          August 18, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.9k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          25 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">ARM架构</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="深入了解ARM架构"><a href="#深入了解ARM架构" class="headerlink" title="深入了解ARM架构"></a>深入了解ARM架构</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><h3 id="ARM架构"><a href="#ARM架构" class="headerlink" title="ARM架构"></a>ARM架构</h3><p>ARM架构（Advanced RISC Machine 更早称作Acorn RISC Machine）是一种基于精简指令集计算（RISC）的处理器架构，以其高效能和低功耗的特性在移动设备、嵌入式系统以及服务器等领域得到广泛应用。</p>
+<h3 id="ARM32架构"><a href="#ARM32架构" class="headerlink" title="ARM32架构"></a>ARM32架构</h3><p>ARM32架构提供了16个通用寄存器（R0至R15），其中R15为程序计数器（PC）。ARM模式和Thumb模式共享这些寄存器，但由于指令长度不同，寄存器的访问方式也有所差异。</p>
+<p>ARM32架构引入了三种模式：</p>
+<ul>
+<li><strong>ARM模式</strong>: 适用于对性能要求较高的场景，如复杂计算和数据密集型应用。ARM模式使用32位指令集，指令大小为4字节，提供较强的计算能力。</li>
+<li><strong>Thumb模式</strong>：适合内存和存储受限的设备，指令大小为2字节，能有效节省内存，提高存储效率。</li>
+<li><strong>Thumb-2模式</strong>：结合ARM和Thumb指令，在执行效率与内存使用之间提供最佳平衡，广泛应用于需要平衡性能与资源消耗的嵌入式系统，指令大小为2或4字节。</li>
+</ul>
+<h3 id="ARM64架构"><a href="#ARM64架构" class="headerlink" title="ARM64架构"></a>ARM64架构</h3><p>ARM64架构（也称为AArch64）是ARM架构的64位扩展，旨在提供更高的性能和更大的内存寻址能力。它定义了两种执行状态，以兼顾兼容性和现代计算需求：</p>
+<h4 id="AArch32状态"><a href="#AArch32状态" class="headerlink" title="AArch32状态"></a>AArch32状态</h4><p>AArch32状态提供与经典ARMv7-A及更早32位ARM架构的兼容性，支持A32（ARM）或T32（Thumb&#x2F;Thumb-2）指令集。A32指令固定为32位，而T32指令则包含16位和32位混合指令。AArch32状态适用于内存和计算需求较低的场景，尤其是对现有32位应用程序和操作系统具有兼容性要求的设备，常见于嵌入式系统和低功耗设备。</p>
+<h4 id="AArch64状态"><a href="#AArch64状态" class="headerlink" title="AArch64状态"></a>AArch64状态</h4><p>AArch64是ARM64的原生64位执行状态，使用A64指令集，所有指令长度为32位（4字节）。AArch64提供64位宽的通用寄存器、更大的虚拟地址空间（通常为48位）以及增强的指令集，适合对计算能力和内存有较高要求的应用，如高性能计算、服务器、移动设备和桌面计算。</p>
+<h4 id="执行状态切换"><a href="#执行状态切换" class="headerlink" title="执行状态切换"></a>执行状态切换</h4><p>ARM64架构支持在异常级别转换（如系统调用或中断时）时切换执行状态。根据目标异常级别的配置，处理器可以在支持AArch64的内核上同时运行64位（AArch64）和32位（AArch32）用户态应用程序，或在支持AArch32的内核上运行32位应用程序。这种机制确保操作系统可以灵活地处理不同架构的应用。</p>
+<h2 id="ARM指令集与产品命名规范"><a href="#ARM指令集与产品命名规范" class="headerlink" title="ARM指令集与产品命名规范"></a>ARM指令集与产品命名规范</h2><h3 id="ARM-指令集架构-ISA-命名"><a href="#ARM-指令集架构-ISA-命名" class="headerlink" title="ARM 指令集架构(ISA)命名"></a>ARM 指令集架构(ISA)命名</h3><h4 id="ARMv3-ARMv6"><a href="#ARMv3-ARMv6" class="headerlink" title="ARMv3 - ARMv6"></a>ARMv3 - ARMv6</h4><p>指令集命名规则: <code>ARMv[n][variants][x(variants)]</code></p>
+<p><strong>组成部分</strong>：</p>
+<ol>
+<li><p>ARMv：固定前缀，表示 ARM 架构版本</p>
+</li>
+<li><p>n：核心架构主版本号 (1-6)</p>
+</li>
+<li><p>variants：(可选) 包含的变种&#x2F;特性。表示该版本架构支持的可选功能扩展</p>
+<ul>
+<li><p>T: 支持 Thumb (16位) 指令集</p>
+</li>
+<li><p>M：支持 长乘法指令 (32x32-&gt;64)</p>
+</li>
+<li><p>E：支持 增强型 DSP 指令</p>
+</li>
+<li><p>J： 支持 Jazelle (Java bytecode 加速)</p>
+</li>
+<li><p>SIMD：支持 ARM 媒体功能扩展 (早期 SIMD)</p>
+</li>
+</ul>
+</li>
+<li><p>[x(variants)]： (可选) 排除的变种。以 <code>x</code> 开头，后面紧跟一个或多个字母，表示该特定实现或配置中不包含这些在基础版本中可能存在的特性</p>
+</li>
+</ol>
+<p><strong>示例</strong>:</p>
+<ol>
+<li><p>ARMv5T： ARMv5 架构，支持 Thumb 指令集。</p>
+</li>
+<li><p>ARMv5TE： ARMv5 架构，支持 Thumb 和增强型 DSP 指令。</p>
+</li>
+<li><p>ARMv5TxM： ARMv5 架构，支持 Thumb (T)，但不支持长乘法指令 (xM)。 (基于 ARMv5T 的一个特定配置)。</p>
+</li>
+<li><p>ARMv6： ARMv6 基础架构。</p>
+</li>
+<li><p>ARMv6K： ARMv6 架构，包含特定扩展 (K 通常表示支持多核同步原语)。</p>
+</li>
+</ol>
+<h4 id="ARMv7-及之后命名规则"><a href="#ARMv7-及之后命名规则" class="headerlink" title="ARMv7 及之后命名规则"></a>ARMv7 及之后命名规则</h4><p>指令集命名规则: <code>ARMv[n][Profile][.minor][optional_extensions]</code></p>
+<p><strong>组成部分</strong>：</p>
+<ol>
+<li>ARMv： 固定前缀，表示 ARM 架构版本</li>
+<li>n：核心架构主版本号 (7-X)</li>
+<li>Profile：必须指定的核心配置文件。定义了架构的根本目标和特性集<ul>
+<li>A (Application profile) ：<ol>
+<li>面向运行复杂操作系统(Linux, Android, Windows, macOS)的应用处理器</li>
+<li>支持基于内存管理单元 (MMU) 的虚拟内存系统架构 (VMSA)</li>
+<li>支持A64、A32、T32指令集</li>
+</ol>
+</li>
+<li>R (Real-time profile) ：<ol>
+<li>面向需要硬实时性能的嵌入式系统。</li>
+<li>支持基于内存保护单元 (MPU) 的受保护内存系统架构 (PMSA)</li>
+<li>支持基于 MMU 的可选 VMSA</li>
+<li>支持A64、A32、T32指令集</li>
+</ol>
+</li>
+<li>M (Microcontroller profile) :<ol>
+<li>面向深入嵌入式和微控制器应用，强调超低功耗，小面积，易用性。</li>
+<li>实现了专为低延迟中断处理而设计的程序员模型，具有寄存器的硬件堆栈，并支持使用高级语言编写中断处理程序</li>
+<li>实现了实时处理器配置文件（R-profile）保护内存系统架构（PMSA）的一个变体</li>
+<li>支持 Thumb-2（T32）指令集的一个变体</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>.minor：(可选) 次要版本号。表示在该主版本和 Profile 下的增量功能扩展或修订</li>
+</ol>
+<p><strong>示例</strong></p>
+<ol>
+<li><p>ARMv7-A： ARMv7 应用处理器配置文件。</p>
+</li>
+<li><p>ARMv8-A： ARMv8 应用处理器配置文件 (引入 64位 AArch64)。</p>
+</li>
+<li><p>ARMv8-R： ARMv8 实时处理器配置文件。</p>
+</li>
+<li><p>ARMv8.1-M： ARMv8-M 的第 1 次功能扩展 (如新增指令、增强安全)。</p>
+</li>
+</ol>
+<h3 id="ARM-处理器系列命名"><a href="#ARM-处理器系列命名" class="headerlink" title="ARM 处理器系列命名"></a>ARM 处理器系列命名</h3><h4 id="ARMv3-ARMv6-1"><a href="#ARMv3-ARMv6-1" class="headerlink" title="ARMv3 - ARMv6"></a>ARMv3 - ARMv6</h4><p>处理器命名规则：<code>ARM&#123;x&#125;&#123;y&#125;&#123;z&#125;&#123;suffixes&#125;</code></p>
+<p><strong>组成部分</strong>：</p>
+<ol>
+<li>x：处理器家族代号&#x2F;世代 (7-X)</li>
+<li>y：存储管理&#x2F;保护单元类型（例如MMU或MPU数量）</li>
+<li>z：Cache 配置Cache大小或结构）</li>
+<li>suffixes：后缀字母 (可选，可组合)<ul>
+<li>T：支持 Thumb 指令集</li>
+<li>D：支持 片上调试 (On-chip Debug)</li>
+<li>M：支持 快速乘法器 (32x32-&gt;32 或 32x32-&gt;64)</li>
+<li>I：支持 EmbeddedICE 宏单元，提供嵌入式跟踪调试 (JTAG 调试)</li>
+<li>E：支持 增强型 DSP 指令</li>
+<li>J：支持 Jazelle 直接 Java bytecode 执行</li>
+<li>F：包含 向量浮点单元 (VFP)</li>
+<li>-S：表示该处理器设计是 可综合的 (Synthesizable)，以 RTL (如 Verilog, VHDL) 形式交付给芯片厂商，而非硬核。</li>
+</ul>
+</li>
+</ol>
+<h4 id="ARMv7-及之后命名规则-1"><a href="#ARMv7-及之后命名规则-1" class="headerlink" title="ARMv7 及之后命名规则"></a>ARMv7 及之后命名规则</h4><p>自ARMv7架构起，ARM公司彻底改革命名体系，启用 Cortex 作为统一品牌。</p>
+<table>
+<thead>
+<tr>
+<th>系列</th>
+<th>目标市场</th>
+<th>核心特性</th>
+<th>典型产品</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Cortex-A</td>
+<td>高性能应用处理器</td>
+<td>支持虚拟内存（MMU）、多核&#x2F;高频设计、运行Linux&#x2F;Android等复杂OS</td>
+<td>Cortex-A53&#x2F;A77&#x2F;A715</td>
+</tr>
+<tr>
+<td>Cortex-R</td>
+<td>实时嵌入式系统</td>
+<td>硬实时响应、高可靠性（ECC&#x2F;锁步核）、内存保护（MPU），适用于汽车制动&#x2F;工业控制</td>
+<td>Cortex-R5&#x2F;R52&#x2F;R82</td>
+</tr>
+<tr>
+<td>Cortex-M</td>
+<td>微控制器（MCU）</td>
+<td>超低功耗、精简指令集（Thumb-2）、无MMU，替代传统8051&#x2F;ARM7</td>
+<td>Cortex-M0+&#x2F;M4&#x2F;M33</td>
+</tr>
+</tbody></table>
+<h2 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h2><h3 id="ARM32"><a href="#ARM32" class="headerlink" title="ARM32"></a>ARM32</h3><table>
+<thead>
+<tr>
+<th>寄存器</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>R0-R3</td>
+<td>参数寄存器：用于传递函数的前四个参数（如果有更多参数，会通过栈传递）, 除此之外 函数返回值通常使用r0寄存器。</td>
+</tr>
+<tr>
+<td>R4-R7</td>
+<td>保存寄存器：通常用于存储局部变量或中间结果，函数调用时不会被修改。</td>
+</tr>
+<tr>
+<td>R8-R12</td>
+<td>临时寄存器：通常用于临时存储数据，函数调用时可以被修改。</td>
+</tr>
+<tr>
+<td>R13</td>
+<td>栈指针 (Stack Pointer as SP)：指向当前栈的顶部，用于管理堆栈。</td>
+</tr>
+<tr>
+<td>r14</td>
+<td>链接寄存器 (Link Register as LR)：存储函数调用的返回地址。</td>
+</tr>
+<tr>
+<td>r15</td>
+<td>程序计数器 (Program Counter as PC)：指向当前执行指令的地址，用于控制程序的执行流程。</td>
+</tr>
+<tr>
+<td>cpsr</td>
+<td>当前程序状态寄存器 (Current Program Status Register)：包含条件标志（如零标志、负标志、溢出标志等），以及控制状态和中断禁用状态。</td>
+</tr>
+</tbody></table>
+<h3 id="ARM64"><a href="#ARM64" class="headerlink" title="ARM64"></a>ARM64</h3><table>
+<thead>
+<tr>
+<th><strong>寄存器</strong></th>
+<th><strong>用途</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>x0 - x7</td>
+<td>参数寄存器：用于传递函数的前八个参数（如果有更多参数，会通过栈传递）， , 除此之外 函数返回值通常使用x0寄存器。。</td>
+</tr>
+<tr>
+<td>x8</td>
+<td>返回值寄存器：用于函数返回值。通常，函数的返回值存储在x0寄存器中，但当返回多个值时，x8也可能用于额外的返回值。</td>
+</tr>
+<tr>
+<td>x9 - x15</td>
+<td>保存寄存器：这些寄存器通常用于存储局部变量或中间结果，在函数调用时不被修改。</td>
+</tr>
+<tr>
+<td>x16 - x17</td>
+<td>链接寄存器 (LR) 和中间结果：x16用于操作系统&#x2F;异常处理的链接寄存器（例如异常返回地址），x17通常作为中间结果寄存器。</td>
+</tr>
+<tr>
+<td>x18</td>
+<td>平台特定寄存器：根据平台的不同，x18可以作为操作系统或平台的特定用途寄存器。</td>
+</tr>
+<tr>
+<td>x19 - x28</td>
+<td>保存寄存器：这些寄存器用于保存局部变量，在函数调用时不会被修改。</td>
+</tr>
+<tr>
+<td>x29</td>
+<td>帧指针寄存器 (FP)：指向当前函数栈帧的基地址，用于栈操作。</td>
+</tr>
+<tr>
+<td>x30</td>
+<td>链接寄存器 (LR)：存储函数调用的返回地址。</td>
+</tr>
+<tr>
+<td>PC</td>
+<td>程序计数器 (PC)：指向当前执行的指令，ARM64架构中，x31也叫pc寄存器，用于控制程序的执行流。</td>
+</tr>
+<tr>
+<td>sp</td>
+<td>栈指针 (SP)：指向当前栈的顶部，用于堆栈管理。与<code>x29</code>（帧指针）一起用于栈操作。</td>
+</tr>
+<tr>
+<td>nzcv</td>
+<td>程序状态寄存器 (CPSR)：包含当前程序的条件标志（如零标志、负标志、溢出标志等），用于控制程序状态。</td>
+</tr>
+</tbody></table>
+<h2 id="调用约定"><a href="#调用约定" class="headerlink" title="调用约定"></a>调用约定</h2><h3 id="ARM32-1"><a href="#ARM32-1" class="headerlink" title="ARM32"></a>ARM32</h3><p>在 ARM32 架构下，常见的调用约定为 <strong>AAPCS (ARM Architecture Procedure Call Standard)</strong>。</p>
+<p><strong>参数传递</strong>：</p>
+<ul>
+<li>前四个参数通过寄存器传递：<code>r0</code> - <code>r3</code>。</li>
+<li>超过四个参数的部分通过栈传递。</li>
+<li>对于浮点参数，前四个浮点参数通过 <code>s0</code> - <code>s3</code>（如果有更多的浮点参数，继续通过栈传递）。</li>
+</ul>
+<p><strong>返回值</strong>：</p>
+<ul>
+<li>返回值通常存放在 <code>r0</code> 寄存器中。</li>
+<li>如果返回值是浮点数，通常会通过 <code>s0</code> 寄存器返回。</li>
+</ul>
+<p><strong>栈</strong>：</p>
+<ul>
+<li>栈对齐：栈通常需要按 8 字节对齐。</li>
+<li>在函数调用前，调用者需要保存寄存器 <code>r4</code> - <code>r11</code>（通用寄存器）以及 <code>lr</code>（链接寄存器），如果需要使用这些寄存器。</li>
+<li>被调用者函数保存 <code>r4</code> - <code>r11</code> 和 <code>lr</code>，并在返回之前恢复它们。</li>
+</ul>
+<p><strong>栈指针</strong>：</p>
+<ul>
+<li>栈指针通常是 <code>sp</code>，但栈指针在某些情况下可能会有额外的对齐要求。</li>
+</ul>
+<p><strong>调用约定总结</strong>：</p>
+<ul>
+<li>参数：<code>r0</code> - <code>r3</code>（最多四个整数参数），栈传递额外参数。</li>
+<li>返回值：<code>r0</code>（整数返回值），<code>s0</code>（浮点返回值）。</li>
+<li>寄存器保存：调用者保存 <code>r4</code> - <code>r11</code>，被调用者保存 <code>r4</code> - <code>r11</code> 和 <code>lr</code>。</li>
+</ul>
+<h3 id="ARM64-1"><a href="#ARM64-1" class="headerlink" title="ARM64"></a>ARM64</h3><p>在 ARM64 架构下，常见的调用约定为 <strong>AArch64 Procedure Call Standard (AAPCS64)</strong></p>
+<p><strong>参数传递</strong>：</p>
+<ul>
+<li>前八个参数通过寄存器传递：<code>x0</code> - <code>x7</code>。</li>
+<li>如果有更多的参数，剩余的参数通过栈传递。</li>
+<li>对于浮点参数，前八个浮点参数通过 <code>v0</code> - <code>v7</code>（如果有更多的浮点参数，继续通过栈传递）。</li>
+</ul>
+<p><strong>返回值</strong>：</p>
+<ul>
+<li>返回值通常存放在 <code>x0</code> 寄存器中（对于整数或指针类型）。</li>
+<li>如果返回值是浮点数，通常会通过 <code>v0</code> 寄存器返回。</li>
+</ul>
+<p><strong>栈</strong>：</p>
+<ul>
+<li>栈对齐：栈通常需要按 16 字节对齐（相较于 ARM32 的 8 字节对齐）。</li>
+<li>在函数调用前，调用者需要保存 <code>x19</code> - <code>x29</code>（通用寄存器）以及 <code>lr</code>（链接寄存器），如果需要使用这些寄存器。</li>
+<li>被调用者函数保存 <code>x19</code> - <code>x29</code> 和 <code>lr</code>，并在返回之前恢复它们。</li>
+</ul>
+<p><strong>栈指针</strong>：</p>
+<ul>
+<li>栈指针通常是 <code>sp</code>，栈对齐要求为 16 字节。</li>
+</ul>
+<p><strong>调用约定总结</strong>：</p>
+<ul>
+<li>参数：<code>x0</code> - <code>x7</code>（最多八个整数参数），栈传递额外参数。</li>
+<li>返回值：<code>x0</code>（整数返回值），<code>v0</code>（浮点返回值）。</li>
+<li>寄存器保存：调用者保存 <code>x19</code> - <code>x29</code>，被调用者保存 <code>x19</code> - <code>x29</code> 和 <code>lr</code>。</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ARM架构</div>
+      <div>http://example.com/2025/08/18/ARM架构/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>August 18, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/08/12/Xposed-%E6%A8%A1%E5%9D%97%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97/" title="Xposed 模块开发指南">
+                        <span class="hidden-mobile">Xposed 模块开发指南</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        总访问量 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        总访客数 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
